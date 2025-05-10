@@ -1,0 +1,59 @@
+<div class="row">
+  <div class="col-md-8 mx-auto">
+    <div class="card">
+      <div class="card-header">
+        <h3>Add New Track</h3>
+      </div>
+      <div class="card-body">
+        <form id="add-track-form" enctype="multipart/form-data">
+          <div class="mb-3">
+            <label for="title" class="form-label">Title</label>
+            <input type="text" class="form-control" id="title" name="title" required>
+          </div>
+          <div class="mb-3">
+            <label for="artist" class="form-label">Artist</label>
+            <input type="text" class="form-control" id="artist" name="artist">
+            <div class="form-text">Optional</div>
+          </div>
+          <div class="mb-3">
+            <label for="album" class="form-label">Album</label>
+            <input type="text" class="form-control" id="album" name="album">
+            <div class="form-text">Optional</div>
+          </div>
+          
+          <div class="mb-3">
+            <label class="form-label">Choose an option:</label>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="trackSource" id="uploadOption" value="upload" checked>
+              <label class="form-check-label" for="uploadOption">
+                Upload MP3 File
+              </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="trackSource" id="pathOption" value="path">
+              <label class="form-check-label" for="pathOption">
+                Provide File Path
+              </label>
+            </div>
+          </div>
+          
+          <div id="uploadSection" class="mb-3">
+            <label for="mp3File" class="form-label">MP3 File</label>
+            <input class="form-control" type="file" id="mp3File" name="mp3File" accept="audio/mpeg, audio/mp3">
+          </div>
+          
+          <div id="pathSection" class="mb-3 d-none">
+            <label for="filePath" class="form-label">File Path</label>
+            <input type="text" class="form-control" id="filePath" name="filePath" placeholder="e.g., https://example.com/song.mp3 or /uploads/song.mp3">
+            <div class="form-text">Enter a URL or local path to an MP3 file</div>
+          </div>
+          
+          <div class="d-grid gap-2">
+            <button type="submit" class="btn btn-primary">Add Track</button>
+            <a href="/" class="btn btn-secondary">Cancel</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

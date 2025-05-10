@@ -1,0 +1,99 @@
+<div class="row">
+  <div class="col-md-8">
+    <h2>Your Music Library</h2>
+    
+    <% if (locals.searchTerm) { %>
+      <div class="alert alert-info">
+        Search results for: "<%= searchTerm %>"
+        <a href="/" class="float-end">Clear Search</a>
+      </div>
+    <% } %>
+
+    <% if (currentTrack) { %>
+      <%- include('./partials/player', { track: currentTrack }) %>
+    <% } %>
+    
+    <% if (tracks.length === 0) { %>
+      <div class="alert alert-warning">
+        No tracks found. <a href="/add">Add some music</a> to get started!
+      </div>
+    <% } else { %>
+      <div class="list-group tracks-list">
+        <% tracks.forEach(track => { %>
+          <a href="/play/<%= track._id %>" class="list-group-item list-group-item-action <%= currentTrack && currentTrack._id.toString() === track._id.toString() ? 'active' : '' %>">
+            <div class="d-flex w-100 justify-content-between">
+              <h5 class="mb-1"><%= track.title %></h5>
+              <small><%= new Date(track.uploadDate).toLocaleDateString() %></small>
+            </div>
+            <p class="mb-1">
+              <strong>Artist:</strong> <%= track.artist || 'Unknown Artist' %> | 
+              <strong>Album:</strong> <%= track.album || 'Unknown Album' %>
+            </p>
+            <div class="btn-group btn-group-sm track-actions">
+              <button class="btn btn-sm btn-outline-primary play-btn" data-path="<%= track.filePath %>">
+                <i class="fas fa-play"></i> Play
+              </button>
+              <button class="btn btn-sm btn-outline-secondary edit-btn" data-id="<%= track._id %>" 
+                      data-title="<%= track.title %>" 
+                      data-artist="<%= track.artist %>" 
+                      data-album="<%= track.album %>">
+                <i class="fas fa-edit"></i> Edit
+              </button>
+              <button class="btn btn-sm btn-outline-danger delete-btn" data-id="<%= track._id %>">
+                <i class="fas fa-trash"></i> Delete
+              </button>
+            </div>
+          </a>
+        <% }) %>
+      </div>
+    <% } %>
+  </div>
+  
+  <div class="col-md-4">
+    <div class="card">
+      <div class="card-header">
+        <h4>Quick Actions</h4>
+      </div>
+      <div class="card-body">
+        <a href="/add" class="btn btn-primary w-100 mb-3">
+          <i class="fas fa-plus"></i> Add New Track
+        </a>
+        <div class="d-grid gap-2">
+          <button class="btn btn-secondary" id="shuffle-btn">
+            <i class="fas fa-random"></i> Shuffle Play
+          </button>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Edit Track Modal - Will be controlled by JavaScript -->
+    <div class="modal fade" id="editTrackModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Edit Track</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form id="edit-track-form">
+              <input type="hidden" id="edit-track-id">
+              <div class="mb-3">
+                <label for="edit-title" class="form-label">Title</label>
+                <input type="text" class="form-control" id="edit-title" required>
+              </div>
+              <div class="mb-3">
+                <label for="edit-artist" class="form-label">Artist</label>
+                <input type="text" class="form-control" id="edit-artist">
+              </div>
+              <div class="mb-3">
+                <label for="edit-album" class="form-label">Album</label>
+                <input type="text" class="form-control" id="edit-album">
+              </div>
+              <button type="submit" class="btn btn-primary">Save Changes</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

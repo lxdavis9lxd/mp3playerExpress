@@ -1,0 +1,21 @@
+<div class="card mb-4">
+  <div class="card-body">
+    <h5 class="card-title">
+      <% if (track.title) { %>
+        <%= track.title %>
+      <% } else { %>
+        Untitled Track
+      <% } %>
+    </h5>
+    <p class="card-text">
+      <strong>Artist:</strong> <%= track.artist || 'Unknown Artist' %> | 
+      <strong>Album:</strong> <%= track.album || 'Unknown Album' %>
+    </p>
+    <div class="audio-player">
+      <audio id="audio-player" controls class="w-100">
+        <source src="<%= track.filePath %>" type="audio/mpeg">
+        Your browser does not support the audio element.
+      </audio>
+    </div>
+  </div>
+</div>
