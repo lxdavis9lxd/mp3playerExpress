@@ -4,8 +4,8 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const methodOverride = require('method-override');
 const expressLayouts = require('express-ejs-layouts');
-const config = require('./config/config');
 require('dotenv').config();
+const config = require('./config/config');
 
 // Initialize Express app
 const app = express();

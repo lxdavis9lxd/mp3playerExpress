@@ -5,8 +5,7 @@ module.exports = {
   db: {
     uri: process.env.MONGODB_URI || 'mongodb://localhost:27017/mp3player',
     options: {
-      useNewUrlParser: true,
-      useUnifiedTopology: true
+      // No options needed for MongoDB driver v4+
     }
   },
   
