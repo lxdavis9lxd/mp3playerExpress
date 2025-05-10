@@ -2,6 +2,19 @@
   <div class="col-md-8">
     <h2>Your Music Library</h2>
     
+    <% if (locals.error) { %>
+      <div class="alert alert-danger">
+        <strong>Error:</strong> <%= error %>
+      </div>
+    <% } %>
+    
+    <% if (locals.dbError) { %>
+      <div class="alert alert-warning">
+        <strong>Database Connection Error:</strong> <%= dbError %>
+        <p>Some features may not be available. Please try again later.</p>
+      </div>
+    <% } %>
+    
     <% if (locals.searchTerm) { %>
       <div class="alert alert-info">
         Search results for: "<%= searchTerm %>"

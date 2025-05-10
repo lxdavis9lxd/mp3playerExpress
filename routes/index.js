@@ -5,14 +5,26 @@ const trackController = require('../controllers/trackController');
 // Home page
 router.get('/', async (req, res) => {
   try {
-    const tracks = await trackController.getAllTracks();
+    let tracks = [];
+    try {
+      tracks = await trackController.getAllTracks();
+    } catch (dbError) {
+      console.error('Database error:', dbError);
+      // Gracefully handle DB errors by showing empty tracks list
+    }
+    
     res.render('index', { 
       tracks,
-      currentTrack: null
+      currentTrack: null,
+      dbError: tracks ? null : 'Database connection error'
     });
   } catch (err) {
-    console.error(err);
-    res.status(500).send('Server Error');
+    console.error('Server error:', err);
+    res.render('index', { 
+      tracks: [],
+      currentTrack: null,
+      error: 'An unexpected error occurred'
+    });
   }
 });
 
@@ -20,27 +32,47 @@ router.get('/', async (req, res) => {
 router.get('/search', async (req, res) => {
   try {
     const searchTerm = req.query.term;
-    const tracks = await trackController.searchTracks(searchTerm);
+    let tracks = [];
+    
+    try {
+      tracks = await trackController.searchTracks(searchTerm);
+    } catch (dbError) {
+      console.error('Database error during search:', dbError);
+      // Gracefully handle DB errors by showing empty tracks list
+    }
     
     res.render('index', { 
       tracks,
       currentTrack: null,
-      searchTerm
+      searchTerm,
+      dbError: tracks ? null : 'Database connection error during search'
     });
   } catch (err) {
-    console.error(err);
-    res.status(500).send('Server Error');
+    console.error('Server error during search:', err);
+    res.render('index', { 
+      tracks: [],
+      currentTrack: null,
+      error: 'An unexpected error occurred during search'
+    });
   }
 });
 
 // Play track page
 router.get('/play/:id', async (req, res) => {
   try {
-    const tracks = await trackController.getAllTracks();
-    const currentTrack = await trackController.getTrackById(req.params.id);
+    let tracks = [];
+    let currentTrack = null;
+    
+    try {
+      tracks = await trackController.getAllTracks();
+      currentTrack = await trackController.getTrackById(req.params.id);
+    } catch (dbError) {
+      console.error('Database error while playing track:', dbError);
+      // Gracefully handle DB errors
+    }
     
     if (!currentTrack) {
-      return res.status(404).redirect('/');
+      return res.redirect('/?error=Track+not+found+or+database+error');
     }
     
     res.render('index', { 
@@ -48,8 +80,12 @@ router.get('/play/:id', async (req, res) => {
       currentTrack
     });
   } catch (err) {
-    console.error(err);
-    res.status(500).send('Server Error');
+    console.error('Server error while playing track:', err);
+    res.render('index', { 
+      tracks: [],
+      currentTrack: null,
+      error: 'An unexpected error occurred while playing the track'
+    });
   }
 });
 

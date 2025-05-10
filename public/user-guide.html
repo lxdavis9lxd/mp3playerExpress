@@ -1,0 +1,40 @@
+# MP3 Player App - User Guide
+
+## Overview
+
+This application allows you to manage and play your MP3 files. You can add tracks by uploading MP3 files or by providing URLs to MP3 files, search for tracks by title, artist, or album, and play them directly in your web browser.
+
+## Getting Started
+
+1. **Home Screen**: The main page displays your music library with all available tracks.
+
+2. **Adding Tracks**: Click the "Add Track" button in the navigation bar to add a new track:
+   - Enter the track title (required)
+   - Enter the artist and album (optional)
+   - Either upload an MP3 file from your computer or provide a URL to an MP3 file
+   - Click "Add Track" to save
+
+3. **Playing Tracks**: There are several ways to play a track:
+   - Click on a track in the list to view its details and play it
+   - Click the "Play" button directly in the track list
+   - Use the "Shuffle Play" button to play a random track
+
+4. **Searching**: Use the search box in the navigation bar to find tracks by title, artist, or album.
+
+5. **Managing Tracks**: Each track has options to:
+   - Edit: Update the track's title, artist, or album
+   - Delete: Remove the track from your library
+
+## Troubleshooting
+
+- **Playback Issues**: If a track doesn't play, check if the file path or URL is correct
+- **Database Connection**: If you see a database connection error, the application might be running in limited mode
+- **File Upload Limits**: The maximum file size for uploads is 20MB
+
+## Technical Notes
+
+- The application uses MongoDB to store track information
+- MP3 files can be stored locally in the uploads folder or linked from external URLs
+- REST API endpoints are available for programmatic access to your music library
+
+For more detailed information, refer to the README.md file in the project root.

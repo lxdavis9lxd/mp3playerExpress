@@ -4,6 +4,10 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 const Track = require('../../models/Track');
+const mongoose = require('mongoose');
+
+// Helper function to check if database is connected
+const isDbConnected = () => mongoose.connection.readyState === 1;
 
 // Set up multer for file uploads
 const storage = multer.diskStorage({
@@ -34,28 +38,53 @@ const upload = multer({
 
 // GET all tracks
 router.get('/', async (req, res) => {
+  // Check database connection
+  if (!isDbConnected()) {
+    return res.status(503).json({ 
+      error: 'Database connection unavailable',
+      message: 'The database is currently unavailable. Please try again later.'
+    });
+  }
+
   try {
     const tracks = await Track.find().sort({ uploadDate: -1 });
     res.json(tracks);
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: 'Server Error' });
+    console.error('Error fetching tracks:', err);
+    res.status(500).json({ 
+      error: 'Server Error',
+      message: 'An error occurred while fetching tracks.'
+    });
   }
 });
 
 // GET single track
 router.get('/:id', async (req, res) => {
+  // Check database connection
+  if (!isDbConnected()) {
+    return res.status(503).json({ 
+      error: 'Database connection unavailable',
+      message: 'The database is currently unavailable. Please try again later.'
+    });
+  }
+
   try {
     const track = await Track.findById(req.params.id);
     
     if (!track) {
-      return res.status(404).json({ error: 'Track not found' });
+      return res.status(404).json({ 
+        error: 'Track not found',
+        message: 'The requested track could not be found.'
+      });
     }
     
     res.json(track);
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: 'Server Error' });
+    console.error('Error fetching track:', err);
+    res.status(500).json({ 
+      error: 'Server Error',
+      message: 'An error occurred while fetching the track.'
+    });
   }
 });
 

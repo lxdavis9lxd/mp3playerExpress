@@ -5,7 +5,11 @@ module.exports = {
   db: {
     uri: process.env.MONGODB_URI || 'mongodb://localhost:27017/mp3player',
     options: {
-      // No options needed for MongoDB driver v4+
+      serverSelectionTimeoutMS: 5000,
+      socketTimeoutMS: 45000,
+      family: 4, // Use IPv4, skip trying IPv6
+      retryWrites: true,
+      w: 'majority'
     }
   },
   
